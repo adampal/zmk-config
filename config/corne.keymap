@@ -83,12 +83,12 @@
 // -----------------------------------------------------------------------------
 // |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |
 // | BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |BTCLR|
-// |  /  |  ?  |     |     |     |   |     |     |     |     |     |
+// |  &  |  =  |  _  |  \  |     |   |     |     |     |     |     |
 //             | ESC |     | SPC |   | ENT |     | DEL |
                         bindings = <
    &kp N1        &kp N2       &kp N3       &kp N4       &kp N5        &kp N6     &kp N7     &kp N8   &kp N9     &kp N0
    &bt BT_SEL 0  &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &kp LEFT   &kp DOWN   &kp UP   &kp RIGHT  &bt BT_CLR
-   &kp FSLH      &kp QMARK    &trans       &trans       &trans        &trans     &trans     &trans   &trans     &trans
+   &kp AMPS      &kp EQUAL    &kp UNDER    &kp BSLH     &trans        &trans     &trans     &trans   &trans     &trans
                               &kp ESC      &trans       &kp SPACE     &kp RET    &trans     &kp DEL
                         >;
                 };
@@ -96,15 +96,15 @@
                 raise_layer {
 // Left hand mirrors the Moonlander symbol layer.
 // -----------------------------------------------------------------------------
-// |  !  |  @  |  {  |  }  | "|" |   |  ^  |  &  |  *  |  (  |  )  |
-// |  #  |  $  |  (  |  )  |  `  |   |  -  |  =  |  [  |  ]  |  \  |
-// |  %  |  ^  |  [  |  ]  |  ~  |   |  _  |  +  |  {  |  }  | "|" |
+// |  !  |  @  |  {  |  }  | "|" |   |  *  |  7  |  8  |  9  |  /  |
+// |  #  |  $  |  (  |  )  |  `  |   |  0  |  4  |  5  |  6  |  ?  |
+// |  %  |  ^  |  [  |  ]  |  ~  |   |  +  |  1  |  2  |  3  |  -  |
 //             | ESC |     | SPC |   | ENT |     | DEL |
                         bindings = <
-   &kp EXCL   &kp AT     &kp LBRC &kp RBRC &kp PIPE    &kp CARET  &kp AMPS   &kp ASTRK &kp LPAR &kp RPAR
-   &kp HASH   &kp DLLR   &kp LPAR &kp RPAR &kp GRAVE   &kp MINUS  &kp EQUAL  &kp LBKT  &kp RBKT &kp BSLH
-   &kp PRCNT  &kp CARET  &kp LBKT &kp RBKT &kp TILDE   &kp UNDER  &kp PLUS   &kp LBRC  &kp RBRC &kp PIPE
-                         &kp ESC  &trans   &kp SPACE   &kp RET    &trans     &kp DEL
+   &kp EXCL   &kp AT     &kp LBRC &kp RBRC &kp PIPE    &kp ASTRK  &kp N7  &kp N8  &kp N9  &kp FSLH
+   &kp HASH   &kp DLLR   &kp LPAR &kp RPAR &kp GRAVE   &kp N0     &kp N4  &kp N5  &kp N6  &kp QMARK
+   &kp PRCNT  &kp CARET  &kp LBKT &kp RBKT &kp TILDE   &kp PLUS   &kp N1  &kp N2  &kp N3  &kp MINUS
+                         &kp ESC  &trans   &kp SPACE   &kp RET    &trans  &kp DEL
                         >;
                 };
         };
