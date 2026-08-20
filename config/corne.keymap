@@ -84,6 +84,7 @@
                 compatible = "zmk,keymap";
 
                 default_layer {
+                        display-name = "Base";
 // -----------------------------------------------------------------------------
 // |  '  |  ,  |  .  |  P  |  Y  |   |  F  |  G  |  C  |  R  |  L  |
 // |  A  |  O  |  E  |  U  |  I  |   |  D  |  H  |  T  |  N  |  S  |
@@ -100,6 +101,7 @@
                 };
 
                 lower_layer {
+                        display-name = "Lower";
 // -----------------------------------------------------------------------------
 // Bluetooth lives on the bottom row, NOT the home row: on the home row a
 // stray press while this layer is held or locked switches profile and drops
@@ -117,6 +119,7 @@
                 };
 
                 raise_layer {
+                        display-name = "Raise";
 // Left hand mirrors the Moonlander symbol layer.
 // -----------------------------------------------------------------------------
 // |  !  |  @  |  {  |  }  | "|" |   |  *  |  7  |  8  |  9  |  /  |
