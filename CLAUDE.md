@@ -86,6 +86,12 @@ default), so the `ZMK_WIDGET_*` options that drive the built-in OLED screen do n
 (peripheral) half draws battery and artwork. To swap it for ZMK's plain screen instead, set
 `ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN` plus the Montserrat-26 font options its README lists.
 
+## Thumb cluster naming
+
+Adam calls positions 30 and 35 the **inner** thumb keys (each sits toward the middle of its own
+half's PCB) and 32/33 the **outer** ones, even though 32/33 are the 1.5u keys physically nearest the
+centre of the assembled board. Use his frame when discussing thumb placement.
+
 ## Layer names on the displays
 
 Each layer node carries a `display-name` ("Base" / "Lower" / "Raise"). Without it the nice!view
