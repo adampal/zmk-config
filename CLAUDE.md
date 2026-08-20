@@ -86,6 +86,14 @@ default), so the `ZMK_WIDGET_*` options that drive the built-in OLED screen do n
 (peripheral) half draws battery and artwork. To swap it for ZMK's plain screen instead, set
 `ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN` plus the Montserrat-26 font options its README lists.
 
+## Bluetooth key placement
+
+`&bt BT_SEL n` switches profile and `&bt BT_CLR` deletes the current pairing — both take effect on a
+single press, with no confirmation. Keep them off the home row and away from the arrow cluster: the
+lower layer can be locked on via its tap dance, so a stray home-row press there is ordinary typing,
+and switching profile silently drops the connected host. They live on the lower layer's bottom row,
+with `BT_CLR` isolated on the far right pinky.
+
 ## Home row mods
 
 The home row taps as Dvorak letters and holds as modifiers (`&hml` / `&hmr`, defined in the

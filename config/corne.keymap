@@ -101,14 +101,17 @@
 
                 lower_layer {
 // -----------------------------------------------------------------------------
+// Bluetooth lives on the bottom row, NOT the home row: on the home row a
+// stray press while this layer is held or locked switches profile and drops
+// the current connection. BT_CLR is further isolated on the far pinky.
 // |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |
-// | BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |BTCLR|
-// |  &  |  =  |  _  |  \  |     |   |     |     |     |     |     |
+// |  &  |  =  |  _  |  \  |     |   | LFT | DWN |  UP | RGT |     |
+// | BT1 | BT2 | BT3 | BT4 | BT5 |   |     |     |     |     |BTCLR|
 //             | ESC | SPC |     |   |     | ENT | DEL |
                         bindings = <
    &kp N1        &kp N2       &kp N3       &kp N4       &kp N5        &kp N6     &kp N7     &kp N8   &kp N9     &kp N0
-   &bt BT_SEL 0  &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &kp LEFT   &kp DOWN   &kp UP   &kp RIGHT  &bt BT_CLR
-   &kp AMPS      &kp EQUAL    &kp UNDER    &kp BSLH     &trans        &trans     &trans     &trans   &trans     &trans
+   &kp AMPS      &kp EQUAL    &kp UNDER    &kp BSLH     &trans        &kp LEFT   &kp DOWN   &kp UP   &kp RIGHT  &trans
+   &bt BT_SEL 0  &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &trans     &trans     &trans   &trans     &bt BT_CLR
                               &kp ESC      &kp SPACE    &trans        &trans     &kp RET    &kp DEL
                         >;
                 };
