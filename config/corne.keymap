@@ -58,6 +58,26 @@
                         hold-trigger-key-positions = <LEFT_KEYS THUMBS>;
                         hold-trigger-on-release;
                 };
+
+                // Layer keys: hold for momentary access, double tap to lock the
+                // layer on. Double tap again (the thumb key is &trans on both
+                // layers, so it falls back here) to unlock.
+                //
+                // A hold resolves as soon as any other key is pressed, so
+                // momentary access is not delayed by tapping-term-ms.
+                lower_td: layer_tap_dance_lower {
+                        compatible = "zmk,behavior-tap-dance";
+                        #binding-cells = <0>;
+                        tapping-term-ms = <200>;
+                        bindings = <&mo 1>, <&tog 1>;
+                };
+
+                raise_td: layer_tap_dance_raise {
+                        compatible = "zmk,behavior-tap-dance";
+                        #binding-cells = <0>;
+                        tapping-term-ms = <200>;
+                        bindings = <&mo 2>, <&tog 2>;
+                };
         };
 
         keymap {
@@ -75,7 +95,7 @@
    &kp SQT      &kp COMMA    &kp DOT       &kp P         &kp Y       &kp F     &kp G         &kp C         &kp R        &kp L
    &hml LGUI A  &hml LALT O  &hml LCTRL E  &hml LSHFT U  &kp I       &kp D     &hmr RSHFT H  &hmr RCTRL T  &hmr RALT N  &hmr RGUI S
    &kp SEMI     &kp Q        &kp J         &kp K         &kp X       &kp B     &kp M         &kp W         &kp V        &kp Z
-                             &kp TAB       &mo 1         &kp SPACE   &kp RET   &mo 2         &kp BSPC
+                             &kp TAB       &lower_td     &kp SPACE   &kp RET   &raise_td     &kp BSPC
                         >;
                 };
 

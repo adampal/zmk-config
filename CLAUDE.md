@@ -49,8 +49,14 @@ unless explicitly asked to set that up.
 
 ## Editing the keymap
 
-Layers are positional: `&mo 1` / `&mo 2` refer to the second and third layer nodes in source order,
-so reordering or inserting a layer silently rebinds them.
+Layers are positional: the `&mo N` / `&tog N` inside the `lower_td` / `raise_td` tap dances refer to
+the second and third layer nodes in source order, so reordering or inserting a layer silently
+rebinds them.
+
+The layer thumb keys are tap dances: hold for momentary, double tap to lock the layer on. Unlocking
+depends on those thumb positions being `&trans` on the lower and raise layers so they fall back to
+the tap dance on the default layer — binding them to something else on a layer makes that layer
+impossible to leave without a reset.
 
 The keymap selects the 5-column layout via `chosen { zmk,physical-layout = &foostan_corne_5col_layout; }`.
 The corne shield defaults to the 6-column (42-key) layout, so **that node is what makes this a 36-key
