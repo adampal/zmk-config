@@ -17,11 +17,13 @@ Builds happen in **GitHub Actions**, not locally. `.github/workflows/build.yml` 
 `zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3`, which reads `build.yaml` as a job
 matrix and uploads the resulting `.uf2` artifacts.
 
-- Trigger: any push, PR, or manual `workflow_dispatch`.
+- Trigger: pushes to `main` and manual `workflow_dispatch` only. Branches and PRs deliberately do
+  not build — firmware is only cut from what's actually on `main`.
 - To flash: download the run's artifact zip, double-tap reset on each half to mount the bootloader
   volume, copy `corne_left-nice_nano_v2-zmk.uf2` / `corne_right-...uf2` across.
-- Verify a change by pushing and checking the run (`gh run list` / `gh run watch`) — a keymap
-  syntax error fails the build there, which is the only feedback loop available.
+- Verify a change by pushing to `main` and checking the run (`gh run list` / `gh run watch`), or by
+  kicking a branch build manually with `gh workflow run "Build ZMK firmware" --ref <branch>`. A
+  keymap syntax error only surfaces there — it's the only feedback loop available.
 
 There is no local west toolchain installed (no `west`, no Zephyr SDK). Don't attempt a local build
 unless explicitly asked to set that up.
