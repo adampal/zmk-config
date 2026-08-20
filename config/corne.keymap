@@ -8,48 +8,102 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
+// Key positions, for hold-trigger-key-positions below:
+//
+//   0  1  2  3  4     5  6  7  8  9
+//  10 11 12 13 14    15 16 17 18 19
+//  20 21 22 23 24    25 26 27 28 29
+//        30 31 32    33 34 35
+#define LEFT_KEYS  0 1 2 3 4 10 11 12 13 14 20 21 22 23 24
+#define RIGHT_KEYS 5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
+#define THUMBS     30 31 32 33 34 35
+
 / {
+        chosen {
+                // This board is the 3x5+3 (five column) Corne, not the 42-key
+                // six column default the shield ships with.
+                zmk,physical-layout = &foostan_corne_5col_layout;
+        };
+
+        behaviors {
+                // Home row mods. Tap for the letter, hold for the modifier.
+                //
+                // hold-trigger-key-positions limits each hand's mods to keys on
+                // the OTHER hand (plus the thumbs), so same-hand rolls such as
+                // a -> o can never resolve to a modifier.
+                //
+                // require-prior-idle-ms forces a tap outright if another key was
+                // pressed in the last 150ms, which kills mid-word misfires: mods
+                // only engage after you have paused.
+                hml: home_row_mod_left {
+                        compatible = "zmk,behavior-hold-tap";
+                        #binding-cells = <2>;
+                        bindings = <&kp>, <&kp>;
+                        flavor = "balanced";
+                        tapping-term-ms = <200>;
+                        quick-tap-ms = <175>;
+                        require-prior-idle-ms = <150>;
+                        hold-trigger-key-positions = <RIGHT_KEYS THUMBS>;
+                        hold-trigger-on-release;
+                };
+
+                hmr: home_row_mod_right {
+                        compatible = "zmk,behavior-hold-tap";
+                        #binding-cells = <2>;
+                        bindings = <&kp>, <&kp>;
+                        flavor = "balanced";
+                        tapping-term-ms = <200>;
+                        quick-tap-ms = <175>;
+                        require-prior-idle-ms = <150>;
+                        hold-trigger-key-positions = <LEFT_KEYS THUMBS>;
+                        hold-trigger-on-release;
+                };
+        };
+
         keymap {
                 compatible = "zmk,keymap";
 
                 default_layer {
-// -----------------------------------------------------------------------------------------
-// |  TAB |  '  |  ,  |  .  |  P  |  Y  |   |  F  |  G   |  C  |  R  |  L  | BSPC |
-// | CTRL |  A  |  O  |  E  |  U  |  I  |   |  D  |  H   |  T  |  N  |  S  |  -   |
-// | SHFT |  ;  |  Q  |  J  |  K  |  X  |   |  B  |  M   |  W  |  V  |  Z  | ESC  |
-//                    | GUI | LWR | SPC |   | ENT | RSE  | ALT |
+// -----------------------------------------------------------------------------
+// |  '  |  ,  |  .  |  P  |  Y  |   |  F  |  G  |  C  |  R  |  L  |
+// |  A  |  O  |  E  |  U  |  I  |   |  D  |  H  |  T  |  N  |  S  |
+// |  ;  |  Q  |  J  |  K  |  X  |   |  B  |  M  |  W  |  V  |  Z  |
+//             | TAB | LWR | SPC |   | ENT | RSE | BSPC|
+//
+// Home row hold:  GUI ALT CTL SFT  -  |  -  SFT CTL ALT GUI
                         bindings = <
-   &kp TAB   &kp SQT  &kp COMMA &kp DOT &kp P &kp Y   &kp F &kp G  &kp C &kp R &kp L     &kp BSPC
-   &kp LCTRL &kp A    &kp O     &kp E   &kp U &kp I   &kp D &kp H  &kp T &kp N &kp S     &kp MINUS
-   &kp LSHFT &kp SEMI &kp Q     &kp J   &kp K &kp X   &kp B &kp M  &kp W &kp V &kp Z     &kp ESC
-                      &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &kp RALT
+   &kp SQT      &kp COMMA    &kp DOT       &kp P         &kp Y       &kp F     &kp G         &kp C         &kp R        &kp L
+   &hml LGUI A  &hml LALT O  &hml LCTRL E  &hml LSHFT U  &kp I       &kp D     &hmr RSHFT H  &hmr RCTRL T  &hmr RALT N  &hmr RGUI S
+   &kp SEMI     &kp Q        &kp J         &kp K         &kp X       &kp B     &kp M         &kp W         &kp V        &kp Z
+                             &kp TAB       &mo 1         &kp SPACE   &kp RET   &mo 2         &kp BSPC
                         >;
                 };
+
                 lower_layer {
-// -----------------------------------------------------------------------------------------
-// |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BSPC |
-// | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
-// | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
+// -----------------------------------------------------------------------------
+// |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |
+// | BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |BTCLR|
+// |     |     |     |     |     |   |     |     |     |     |     |
+//             | ESC |     | SPC |   | ENT |     | DEL |
                         bindings = <
-   &kp TAB    &kp N1       &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-   &kp LSHFT  &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                                    &kp LGUI     &trans       &kp SPACE      &kp RET  &trans   &kp RALT
+   &kp N1        &kp N2       &kp N3       &kp N4       &kp N5        &kp N6     &kp N7     &kp N8   &kp N9     &kp N0
+   &bt BT_SEL 0  &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &kp LEFT   &kp DOWN   &kp UP   &kp RIGHT  &bt BT_CLR
+   &trans        &trans       &trans       &trans       &trans        &trans     &trans     &trans   &trans     &trans
+                              &kp ESC      &trans       &kp SPACE     &kp RET    &trans     &kp DEL
                         >;
                 };
 
                 raise_layer {
-// -----------------------------------------------------------------------------------------
-// |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BSPC |
-// | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
-// | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
+// -----------------------------------------------------------------------------
+// |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  |
+// |  `  |  /  |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |
+// |  ~  |  ?  |     |     |     |   |  _  |  +  |  {  |  }  | "|" |
+//             | ESC |     | SPC |   | ENT |     | DEL |
                         bindings = <
-   &kp  TAB  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp ASTRK &kp LPAR &kp RPAR &kp BSPC
-   &kp LCTRL &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT  &kp RBKT &kp BSLH &kp GRAVE
-   &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC  &kp RBRC &kp PIPE &kp TILDE
-                             &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+   &kp EXCL   &kp AT     &kp HASH &kp DLLR &kp PRCNT   &kp CARET  &kp AMPS   &kp ASTRK &kp LPAR &kp RPAR
+   &kp GRAVE  &kp FSLH   &trans   &trans   &trans      &kp MINUS  &kp EQUAL  &kp LBKT  &kp RBKT &kp BSLH
+   &kp TILDE  &kp QMARK  &trans   &trans   &trans      &kp UNDER  &kp PLUS   &kp LBRC  &kp RBRC &kp PIPE
+                         &kp ESC  &trans   &kp SPACE   &kp RET    &trans     &kp DEL
                         >;
                 };
         };
