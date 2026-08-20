@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A personal [ZMK](https://zmk.dev) firmware config (a "zmk-config" repo) — it holds only the
 user-side keymap/config; the firmware source itself lives upstream in `zmkfirmware/zmk`.
 Current hardware: a split **Corne** in the **5-column (3x5+3, 36-key)** variant, on two
-**nice!nano v2** controllers.
+**nice!nano v2** controllers, with **nice!view** panels on both halves.
 
 There is no application code, no test suite, and no lint step. The deliverable is a pair of
 `.uf2` files produced by CI.
@@ -38,8 +38,8 @@ unless explicitly asked to set that up.
   and binding available; also bump the `@v0.3` ref in `.github/workflows/build.yml` to match.
 - `config/corne.keymap` — devicetree overlay defining the `keymap` node. Filename must match the
   shield name minus the `_left`/`_right` suffix; both halves share one keymap.
-- `config/corne.conf` — Kconfig for that shield (RGB underglow and OLED display are present but
-  commented out).
+- `config/corne.conf` — Kconfig for that shield. `CONFIG_ZMK_DISPLAY=y` drives the nice!views; RGB
+  underglow is present but commented out.
 - `zephyr/module.yml` + `boards/` — declares this repo as a Zephyr module with `board_root: .`, so
   custom boards/shields dropped in `boards/shields/` are discovered by the build. Currently empty.
 - `.zmk/` — **gitignored**, local only. A partial west checkout of ZMK source (zephyr/lvgl filtered
@@ -70,6 +70,21 @@ below) rather than deleting a slot — the array length is fixed by the shield.
 
 Keycode names come from `dt-bindings/zmk/keys.h`; behaviors (`&kp`, `&mo`, `&bt`, `&mt`, ...) from
 `behaviors.dtsi`. Both are in `.zmk/zmk/app/` — check there rather than guessing a name.
+
+## Displays
+
+Both halves run **nice!view** panels, not the I2C OLEDs the corne shield assumes. That is why each
+`build.yaml` entry lists three shields: `corne_left nice_view_adapter nice_view`. Order matters —
+the adapter must come before `nice_view`. It repurposes the OLED header's SDA/SCL as SPI and expects
+the nice!view CS pin to be bodged to `&pro_micro 1` (D1, top-left pin on the front). If a build is
+wired to a different pin, override `cs-gpios` on `&nice_view_spi` in `corne.keymap` rather than
+editing the shield.
+
+The nice!view ships its own custom status screen (`ZMK_DISPLAY_STATUS_SCREEN_CUSTOM` is its
+default), so the `ZMK_WIDGET_*` options that drive the built-in OLED screen do not apply. The left
+(central) half draws output status, battery, WPM and the five BLE profile indicators; the right
+(peripheral) half draws battery and artwork. To swap it for ZMK's plain screen instead, set
+`ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN` plus the Montserrat-26 font options its README lists.
 
 ## Home row mods
 
